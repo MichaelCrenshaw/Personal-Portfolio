@@ -1,0 +1,29 @@
+# persist database volume for local development
+volumes:
+  data:
+
+services:
+  postgres:
+    build:
+      context: ./database/
+      dockerfile: postgres.dockerfile
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=${DBUSER}
+      - POSTGRES_PASSWORD=${DBPASS}
+    ports:
+      - 5432:5432
+    volumes:
+      - data:/var/lib/postgresql
+
+  web:
+    build:
+      context: ../app/
+      dockerfile: ../docker/web/web.dockerfile
+    image: web:latest
+    ports:
+      - 8080:8080
+    volumes:
+      - data:/var/lib/postgresql
+    depends_on:
+      - postgres
