@@ -1,20 +1,21 @@
-ARG PYTHON_VERSION=3.10.4
+ARG PYTHON_VERSION=3.10.4-bullseye
 
 FROM python:$PYTHON_VERSION
 ENV PYTHONUNBUFFERED=1
-#WORKDIR /app
+WORKDIR /app
 
-RUN apt-get install update && apt-get upgrade -y
-RUN apt-get install python3.10.4 -y
-RUN apt-get install python3-pip -y
+RUN apt-get update && apt-get upgrade -y
+RUN #apt-get install python3.10 -y
+RUN #apt-get install python3-pip -y
 
-COPY ./app /app
+COPY requirements.txt /app
+RUN python -m pip install -r requirements.txt
 
-RUN pip install -r /app/requirements.txt
+COPY . /app
 
-RUN python -m manage.py migrate
+RUN python manage.py migrate
 
 EXPOSE 8000
 
 #CMD ["python", "manage.py", "runserver"]
-CMD ["hypercorn", "--bind", "0.0.0.0:8000", "app.personal_portfolio.asgi:application"]
+CMD ["hypercorn", "--bind", "0.0.0.0:8000", "personal_portfolio.asgi:application"]
