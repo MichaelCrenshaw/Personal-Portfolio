@@ -21,9 +21,16 @@ services:
       context: ../app/
       dockerfile: ../docker/web/web.dockerfile
     image: web:latest
+    tty: true
     ports:
-      - 8080:8080
-    volumes:
-      - data:/var/lib/postgresql
+      - 8000:8000
+#    command:
+#      - bash -c "/opt/venv/bin/python -m hypercorn --reload --bind 0.0.0.0:8000 app.asgi:application"
+#      - bash -c "python3 -m hypercorn --bind 127.0.0.1:8000 personal_portfolio.asgi:application"
+#    volumes:
+#      - type: bind
+#        source: ../app/
+#        target: /app
+#      - data:/var/lib/postgresql
     depends_on:
       - postgres
