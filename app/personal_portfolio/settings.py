@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 import sys
 
+from ast import literal_eval
 from pathlib import Path
 
 PROJECT_ROOT = os.path.dirname(__file__)
@@ -26,6 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+# todo: change this to a random string
 SECRET_KEY = 'django-insecure-t^&i(%l!su2)pr02b-z9+at25f*lg-(u3yovl7gd4+9vkz#-=2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -33,6 +35,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+if (x := os.getenv('DJANGO_ALLOWED_HOSTS')) is not None:
+    ALLOWED_HOSTS = literal_eval(x)
+else:
+    ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -82,8 +88,12 @@ WSGI_APPLICATION = 'personal_portfolio.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('POSTGRESDB', 'portfolio'),
+        'USER': os.getenv('DBUSER', 'postgres'),
+        'PASSWORD': os.getenv('DBPASS', 'postgres'),
+        'HOST': os.getenv('DBHOST', 'postgres'),
+        'PORT': os.getenv('DBPORT', '5432'),
     }
 }
 
@@ -123,6 +133,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
