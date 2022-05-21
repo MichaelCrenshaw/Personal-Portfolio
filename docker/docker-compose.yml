@@ -51,8 +51,9 @@ services:
       - DBPASS=${DBPASS}
     entrypoint: >
       bash -c "cd ~; . .profile
-      &&  python /app/manage.py migrate
-      && hypercorn --bind 0.0.0.0:8000 /app/personal_portfolio.asgi:application"
+      && python /app/manage.py migrate
+      && hypercorn --bind 0.0.0.0:8000 /app/personal_portfolio.asgi:application
+      "
     depends_on:
       - postgres
     links:

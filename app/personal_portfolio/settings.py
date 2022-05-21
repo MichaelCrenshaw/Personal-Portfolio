@@ -37,12 +37,11 @@ ALLOWED_HOSTS = []
 
 if (x := os.getenv('DJANGO_ALLOWED_HOSTS')) is not None:
     ALLOWED_HOSTS = literal_eval(x)
-else:
-    ALLOWED_HOSTS = ['*']
 
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
