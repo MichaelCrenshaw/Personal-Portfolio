@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> {% block page_title %} {% endblock %} </title>
+    {% block header_scripts %}
+        {% load render_bundle from webpack_loader %}
+        {% render_bundle 'chunk-vendors' %}
+        {% render_bundle vue_app %}
+    {% endblock %}
+</head>
+<body>
+
+</body>
+</html>

@@ -3,6 +3,7 @@
     "webpack": "^5.72.1"
   },
   "dependencies": {
-    "serve": "^13.0.2"
+    "serve": "^13.0.2",
+    "webpack-bundle-tracker": "^1.5.0"
   }
 }
