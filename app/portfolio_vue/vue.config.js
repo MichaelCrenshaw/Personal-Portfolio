@@ -1,11 +1,13 @@
-const BundleTracker = require('webpack-bundle-tracker')
+const { defineConfig } = require('@vue/cli-service');
+
+const BundleTracker = require('webpack-bundle-tracker');
 
 const pages = {
   homepage: {
     entry: './src/homepage.js',
     chunks: ['chunk-vendors'],
   }
-}
+};
 
 module.exports = {
     pages: pages,
@@ -42,15 +44,16 @@ module.exports = {
 
         config.resolve.alias
             .set('__STATIC__', 'static')
-
+// todo: remove dev server and port to secure connection
         config.devServer
-            .public('http://localhost:8080')
+            // .public('http://localhost:8080')
             .host('localhost')
             .port(8080)
-            .hotOnly(true)
-            // .watchOptions({poll: 1000})
+            .hot("only")
+            .http2(true)
+            // .watch(true)
             .https(false)
-            .headers({"Access-Control-Allow-Origin": ["*"]})
+            .headers({"Access-Control-Allow-Origin": ["*"]});
 
     }
 };

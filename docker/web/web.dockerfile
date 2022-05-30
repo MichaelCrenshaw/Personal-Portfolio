@@ -3,15 +3,21 @@ ARG PYTHON_VERSION=python3.10-nodejs18-bullseye
 FROM nikolaik/python-nodejs:$PYTHON_VERSION
 ENV PYTHONUNBUFFERED=1
 
-RUN npm install --global @vue/cli && \
-    npm install --global @vue/cli-service && \
-    npm install --global vue@next && \
-    npm add --global webpack-bundle-tracker --include=dev --save-dev
+#RUN npm init -y && \
+#    npm install --global @vue/cli && \
+#    npm install --global @vue/cli-service && \
+#    npm install --global vue@next && \
+#    npm add webpack-bundle-tracker --include=dev --save-dev
 
 COPY . /app
 WORKDIR /app
 
 RUN cd ./portfolio_vue && \
+    npm init -y && \
+    npm install --global @vue/cli && \
+    npm install --global @vue/cli-service && \
+    npm install --global vue@next && \
+    npm add webpack-bundle-tracker --include=dev --save-dev \
     npm run build && \
     cd ..
 

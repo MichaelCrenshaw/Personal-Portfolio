@@ -4,6 +4,8 @@ networks:
 
 volumes:
   postgres_data:
+  code:
+
 
 services:
   postgres:
@@ -51,6 +53,7 @@ services:
       - DBUSER=${DBUSER}
       - DBPASS=${DBPASS}
       - DJANGO_SALT=${DJANGO_SALT}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS}
     entrypoint: >
       bash -c "cd ~ && . .profile
       && python /app/manage.py migrate
@@ -60,3 +63,7 @@ services:
       "
     depends_on:
       - postgres
+    volumes:
+      - type: bind
+        source: ../app
+        target: /app

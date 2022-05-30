@@ -30,12 +30,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('DJANGO_SALT')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
-if (x := os.getenv('DJANGO_ALLOWED_HOSTS')) is not None:
+if (x := os.getenv('ALLOWED_HOSTS')) is not None:
     ALLOWED_HOSTS = literal_eval(x)
+
+if DEBUG:
+    ALLOWED_HOSTS += ['*']
 
 # vue file loading configs
 VUE_FRONTEND_DIR = os.path.join(BASE_DIR, 'vue_frontend')
