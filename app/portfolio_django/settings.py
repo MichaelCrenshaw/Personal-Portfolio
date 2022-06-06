@@ -16,38 +16,40 @@ import sys
 from ast import literal_eval
 from pathlib import Path
 
+import webpack_loader.config
+from django.core.exceptions import ImproperlyConfigured
+
 PROJECT_ROOT = os.path.dirname(__file__)
 sys.path.insert(0, os.path.join(PROJECT_ROOT, '../'))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# todo: change this to a random string
 SECRET_KEY = os.getenv('DJANGO_SALT')
 
+# todo: run through security checklist before building CI/CD pipeline
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
-if (x := os.getenv('ALLOWED_HOSTS')) is not None:
-    ALLOWED_HOSTS = literal_eval(x)
-
+# allowed hosts shouldn't be anything but an env value unless running a debug server
+# the default behavior wasn't explicit; so I altered it, otherwise the behavior is identical
 if DEBUG:
-    ALLOWED_HOSTS += ['*']
+    ALLOWED_HOSTS = ['*']
+elif (x := os.getenv('ALLOWED_HOSTS')) is not None:
+    ALLOWED_HOSTS = literal_eval(x)
+else:
+    raise ImproperlyConfigured('ALLOWED_HOSTS is not set')
 
 # vue file loading configs
-VUE_FRONTEND_DIR = os.path.join(BASE_DIR, 'vue_frontend')
+VUE_FRONTEND_DIR = '/app/static/vue/'
 
 WEBPACK_LOADER = {
     'DEFAULT': {
         'CACHE': not DEBUG,
-        'BUNDLE_DIR_NAME': 'vue/',  # must end with slash
-        'STATS_FILE': os.path.join(VUE_FRONTEND_DIR, 'webpack-stats.json'),
+        'BUNDLE_DIR_NAME': 'vue/',
+        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
         'POLL_INTERVAL': 0.1,
         'TIMEOUT': None,
         'IGNORE': [r'.+\.hot-update.js', r'.+\.map']
@@ -56,14 +58,14 @@ WEBPACK_LOADER = {
 
 # Application definition
 INSTALLED_APPS = [
-    'rest_framework',
-    'webpack_loader',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'webpack_loader',
 ]
 
 MIDDLEWARE = [

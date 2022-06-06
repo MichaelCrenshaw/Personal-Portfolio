@@ -57,8 +57,7 @@ services:
     entrypoint: >
       bash -c "cd ~ && . .profile
       && python /app/manage.py migrate
-      && hypercorn --bind 0.0.0.0:8000 /app/portfolio_django.asgi:application --reload
-      & ( cd /app/portfolio_vue && npm run serve ) &
+      && hypercorn --bind 0.0.0.0:8000 /app/portfolio_django.asgi:application --reload &
       wait
       "
     depends_on:
