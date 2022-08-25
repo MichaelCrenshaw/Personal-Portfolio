@@ -60,7 +60,8 @@ services:
       bash -c "cd ~ && . .profile
       && python /app/manage.py migrate
       && python /app/manage.py collectstatic --noinput
-      && hypercorn --reload --bind 0.0.0.0:8000 /app/portfolio_django.asgi:application &&
+      && openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 -subj '/C=US/ST=UT/L=Eagle Mountain/O=Dis/CN=localhost:8000' -keyout key.pem -out cert.pem
+      && hypercorn --certfile cert.pem --keyfile key.pem --reload --bind 0.0.0.0:8000 /app/portfolio_django.asgi:application &&
       wait
       "
     depends_on:
