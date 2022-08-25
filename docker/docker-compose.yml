@@ -1,3 +1,5 @@
+version: '3.9'
+
 networks:
   backend:
     driver: bridge
@@ -57,7 +59,8 @@ services:
     entrypoint: >
       bash -c "cd ~ && . .profile
       && python /app/manage.py migrate
-      && hypercorn --bind 0.0.0.0:8000 /app/portfolio_django.asgi:application --reload &
+      && python /app/manage.py collectstatic --noinput
+      && hypercorn --reload --bind 0.0.0.0:8000 /app/portfolio_django.asgi:application &&
       wait
       "
     depends_on:

@@ -16,11 +16,9 @@ import sys
 from ast import literal_eval
 from pathlib import Path
 
-import webpack_loader.config
 from django.core.exceptions import ImproperlyConfigured
 
 PROJECT_ROOT = os.path.dirname(__file__)
-sys.path.insert(0, os.path.join(PROJECT_ROOT, '../'))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -36,7 +34,7 @@ DEBUG = True
 # allowed hosts shouldn't be anything but an env value unless running a debug server
 # the default behavior wasn't explicit; so I altered it, otherwise the behavior is identical
 if DEBUG:
-    ALLOWED_HOSTS = ['*']
+    ALLOWED_HOSTS = ('*',)
 elif (x := os.getenv('ALLOWED_HOSTS')) is not None:
     ALLOWED_HOSTS = literal_eval(x)
 else:
@@ -44,13 +42,13 @@ else:
 
 # Application definition
 INSTALLED_APPS = [
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -80,8 +78,6 @@ TEMPLATES = [
         },
     },
 ]
-
-# WSGI_APPLICATION = 'portfolio_django.wsgi.application'
 
 
 # Database
@@ -130,8 +126,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'static'
+print(PROJECT_ROOT)
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+print(STATIC_ROOT)
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "staticfiles"),
+)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

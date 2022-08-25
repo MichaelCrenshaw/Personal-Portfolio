@@ -2,11 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title> {% block page_title %} {% endblock %} </title>
+    <title> {% block page_title %} {{ page_title }} {% endblock %} </title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static "" %}">
+
     {% block header_scripts %}
     {% endblock %}
 </head>
 <body>
+    {% if not disable_navbar %}
+        {% include "navbar.html" %}
+    {% endif %}
     {% block body %}
     {% endblock %}
 </body>

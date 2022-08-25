@@ -18,9 +18,13 @@ If you've read this far into my code, consider contacting me about anything in p
     If you are calling about my car's extended warranty, maybe you should stop reading.
 """
 
+
 from django.urls import path
 from . import views
+
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.HomePageView.as_view(), name='Homepage'),
 ]
+
