@@ -1,5 +1,7 @@
 .idea/
+node_modules/
 *.env
 .sqlite3
 migrations/
 app/static/
+app/portfolio_vue/webpack-stats.json

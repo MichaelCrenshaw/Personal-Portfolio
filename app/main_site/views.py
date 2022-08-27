@@ -15,3 +15,5 @@ class HomePageView(TemplateView):
         return context
 
 
+def serve_vue(request):
+    return render(request, template_name='vue.html')

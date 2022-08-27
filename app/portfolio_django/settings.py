@@ -41,9 +41,25 @@ elif (x := os.getenv('ALLOWED_HOSTS')) is not None:
 else:
     raise ImproperlyConfigured('ALLOWED_HOSTS is not set')
 
+# vue file loading configs
+VUE_FRONTEND_DIR = os.path.join(BASE_DIR, 'portfolio_vue')
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'CACHE': not DEBUG,
+        'BUNDLE_DIR_NAME': 'vue/',  # must end with slash
+        'STATS_FILE': os.path.join(VUE_FRONTEND_DIR, 'webpack-stats.json'),
+        'POLL_INTERVAL': 0.1,
+        'TIMEOUT': None,
+        'IGNORE': [r'.+\.hot-update.js', r'.+\.map']
+    }
+}
+
+
 # Application definition
 INSTALLED_APPS = [
     'rest_framework',
+    'webpack_loader',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
